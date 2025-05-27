@@ -18,7 +18,7 @@ const db = require("./db/db");
 // Configuração do CORS atualizada
 app.use(
   cors({
-    origin: ["URL Front", "http://localhost:5173"],
+    origin: ["https://file-supabase-vercel.vercel.app", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["X-Requested-With", "Content-Type", "Accept"],
     credentials: true,
