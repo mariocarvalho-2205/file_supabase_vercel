@@ -17,6 +17,7 @@ const db = require("./db/db");
 const allowedOrigins = [
   "https://file-supabase-vercel.vercel.app",
   "http://localhost:5173",
+  "http://localhost:3000"
 ];
 
 const corsOptions = {
@@ -30,10 +31,13 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["X-Requested-With", "Content-Type", "Accept"],
   credentials: true,
+  
 };
 
 // Configuração do CORS atualizada
-app.use(cors(corsOptions));
+app.use(cors(
+  corsOptions
+));
 
 // Rota de teste para verificar se o servidor está funcionando
 app.get("/", (req, res) => {
@@ -43,7 +47,9 @@ app.get("/", (req, res) => {
 // Middleware para testar a conexão com o banco antes de usar as rotas
 const dbMiddleware = async (req, res, next) => {
   try {
+    console.log("TEntando autenticar com o banco")
     await db.authenticate();
+    console.log("Conectado com o banco")
     next();
   } catch (error) {
     console.error("Erro na conexão com o banco:", error);
@@ -51,7 +57,7 @@ const dbMiddleware = async (req, res, next) => {
   }
 };
 // Rota para upload de arquivos
-app.use("/api/alunos", alunoRoutes);
+app.use("/api/alunos", dbMiddleware, alunoRoutes);
 
 // Se estiver rodando localmente
 if (process.env.NODE_ENV !== "production") {

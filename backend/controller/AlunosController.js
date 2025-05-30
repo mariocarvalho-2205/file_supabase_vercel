@@ -86,4 +86,19 @@ module.exports = class AlunosController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  static async getAllAluno(req, res) {
+    console.log("Chegou no get")
+    try {
+      console.log("Antes do res")
+      const aluno = await Aluno.findAll()
+      console.log('Depois do findall')
+      console.table(aluno.map(a => ({
+        nome: a.nome
+      })))
+      res.status(200).json({message: "rota get", aluno: aluno})
+    } catch (error) {
+      res.status(500).json({errors: "Houver um erro no servidor", error})
+    }
+  }
 };
